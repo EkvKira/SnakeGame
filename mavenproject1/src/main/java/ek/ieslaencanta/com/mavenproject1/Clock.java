@@ -38,7 +38,7 @@ public class Clock implements Runnable {
      */
     public Clock(int frecuency) {
         this.frecuency = frecuency;
-        this.delta = (1.0f / (float) frecuency) * 100;
+        this.delta = (1.0f / (float) frecuency) * 5000;
         this.time = System.currentTimeMillis();
         this.observers = new ArrayList<IWarnClock>();
         this.state = ClockState.STOPED;

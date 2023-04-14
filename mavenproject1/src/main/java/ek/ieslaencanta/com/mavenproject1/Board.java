@@ -4,6 +4,7 @@
  */
 package ek.ieslaencanta.com.mavenproject1;
 
+import java.util.concurrent.ThreadLocalRandom;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
@@ -24,9 +25,7 @@ import javafx.scene.paint.Color;
  * @see Bubble Level Shttle BallGrid
  */
 public class Board implements IKeyListener {
-
     private Rectangle2D game_zone;
-
     private GraphicsContext gc;
     private GraphicsContext bggc;
     private MediaPlayer m;
@@ -34,11 +33,15 @@ public class Board implements IKeyListener {
     private boolean game_over;
     private boolean debug;
     private boolean iscolission = false;
-    private boolean left_press, right_press;
+    private boolean left_press, right_press, up_press, down_press;
     private boolean explotarball = false;
     private int level_actual=0;
    private boolean game_win;
    private Snake snake;
+   private Fruit[] f = {new Apple(), new Orange()};
+   private Fruit fruit;
+   private Nofruit[] nf = {new Key(), new Rocket()};
+   private Nofruit nofruit;
 
     /**
      * constructor
@@ -50,7 +53,15 @@ public class Board implements IKeyListener {
         this.game_zone = new Rectangle2D(0, 0, 320, 224);
         this.original_size = original;
         this.debug = false;
-        this.snake = new Snake(new Point2D(100, 100));
+        this.snake = new Snake(new Point2D(100, 100), this.game_zone);
+        int fruti = ThreadLocalRandom.current().nextInt(0,1);
+        this.fruit = f[fruti];
+        this.fruit.setGame_zone(game_zone);
+        this.fruit.setPosicion();
+        int nofruti = ThreadLocalRandom.current().nextInt(0,1);
+        this.nofruit = nf[nofruti];
+        this.nofruit.setGame_zone(game_zone);
+        this.nofruit.setPosicion();
     }
     
     
@@ -79,13 +90,17 @@ public class Board implements IKeyListener {
 
     
     private void update() {
+        
         this.snake.move();
+        
         
 
     }
 
     private void render() {
         this.snake.paint(gc);
+        this.fruit.paint(gc);
+        this.nofruit.paint(gc);
     }
 
 
@@ -131,9 +146,19 @@ public class Board implements IKeyListener {
         switch (code) {
             case LEFT:
                 this.left_press = false;
+                this.snake.change_dir(-1, 0);
                 break;
             case RIGHT:
                 this.right_press = false;
+                this.snake.change_dir(1, 0);
+                break;
+            case UP:
+                this.up_press = false;
+                this.snake.change_dir(0, -1);
+                break;
+            case DOWN:
+                this.down_press = false;
+                this.snake.change_dir(0, 1);
                 break;
             case ENTER:
                 break;

@@ -24,7 +24,6 @@ public class Game implements IWarnClock, IKeyListener {
     public static final int SCALE = 3;
     public static Image imagenes = null;
     public static Clock clock = new Clock(10);
-
     private Dimension2D original_size;
     private Board board;
     private GraphicsContext ctx, bg_context;

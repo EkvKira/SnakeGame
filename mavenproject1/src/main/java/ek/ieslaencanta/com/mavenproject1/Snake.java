@@ -19,16 +19,18 @@ public class Snake {
    private float velocidad;
    private int dirx = 1;
    private int diry = 0;
+   private Rectangle2D game_zone;
     
-   private enum State {
-        LEFT,
+ /*  private enum State {
+       LEFT,
         RIGHT,
         UP,
         DOWN
     }
-   
-    public Snake(Point2D posicion) {
+   */
+    public Snake(Point2D posicion, Rectangle2D game_zone) {
         this.posicion = posicion;
+        this.game_zone = game_zone;
     }
     /**
      * @return the posicion
@@ -67,7 +69,24 @@ public class Snake {
 }
    public void move() {
         boolean pared = false;
-        this.posicion = this.getPosicion().add(1*this.dirx, 1*this.diry);
-        System.out.println(this.getPosicion().getX());
+        this.posicion = this.getPosicion().add(15*this.dirx, 15*this.diry);
+        if(this.posicion.getX() >= game_zone.getMaxX()){
+            this.posicion = new Point2D(game_zone.getMaxX(),this.posicion.getY());
+        }
+        if(this.posicion.getY() >= game_zone.getMaxY()){
+            this.posicion = new Point2D(this.posicion.getX(),game_zone.getMaxY());
+        }
+        if(this.posicion.getX() <= game_zone.getMinX()) {
+            this.posicion = new Point2D(game_zone.getMinX(), this.posicion.getY());
+        }
+        if(this.posicion.getY() <= game_zone.getMinY()) {
+            this.posicion = new Point2D(this.posicion.getX(),game_zone.getMinY());
+        }
 }
+   public void change_dir(int dirx, int diry){
+       this.dirx = dirx;
+       this.diry = diry;
+   }
+   
+   
 }
